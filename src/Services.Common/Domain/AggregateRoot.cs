@@ -12,26 +12,36 @@ namespace Services.Common.Domain
         private int _version = 0;
         public int Version => _version;
 
-        protected AggregateRoot() {
+        protected AggregateRoot() 
+        {
 
         }
 
-        protected void AddDomainEvent(DomainEvent newEvent) {
+        protected void AddDomainEvent(DomainEvent newEvent) 
+        {
             ValidateVersion(newEvent.Version);
             newEvent.Version = ++_version;
             _domainEvents.Add(newEvent);
         }
 
-        private void ValidateVersion(int version) {
+        private void ValidateVersion(int version) 
+        {
             if(Version != version) {
                 throw new InvalidVersionAggregateException("Invalid version specified");
             }
         }
         
 
-        private class InvalidVersionAggregateException : Exception {
+        private class InvalidVersionAggregateException : Exception 
+        {
             public InvalidVersionAggregateException(string str) : base (str) {
 
+            }
+        }
+        public class ArgumentNullAggregateException : AggregateException
+        {
+            public ArgumentNullAggregateException(string message) : base(message)
+            {
             }
         }
     }
