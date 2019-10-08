@@ -8,7 +8,9 @@ namespace Customer.App.UseCases
         {
         }
         
-        public Task HandleAsync(RegisterCustomerCommandMessage command) {
+        public Task HandleAsync(RegisterCustomerCommandMessage command) 
+        {
+            var event = new CustomerRegistered();
             return Task.CompletedTask;
         } 
     }
