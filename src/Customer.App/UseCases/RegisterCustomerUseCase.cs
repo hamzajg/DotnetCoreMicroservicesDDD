@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using Customer.App.Events;
 
 namespace Customer.App.UseCases
 {
@@ -10,7 +12,9 @@ namespace Customer.App.UseCases
         
         public Task HandleAsync(RegisterCustomerCommandMessage command) 
         {
-            var event = new CustomerRegistered();
+            if(command == null)
+                throw new Exception();
+            var e = new CustomerRegistered();
             return Task.CompletedTask;
         } 
     }

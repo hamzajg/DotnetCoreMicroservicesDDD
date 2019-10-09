@@ -1,5 +1,6 @@
 using Customer.App.Domain;
 using Services.Common.Domain.Events;
+
 namespace Customer.App.Events
 {
     public class CustomerCreated : DomainEvent

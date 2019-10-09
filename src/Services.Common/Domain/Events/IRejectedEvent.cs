@@ -1,6 +1,6 @@
 namespace Services.Common.Domain.Events
 {
-    public interface IRejectedEvent : DomainEvent
+    public interface IRejectedEvent : IEvent
     {
          
     }
