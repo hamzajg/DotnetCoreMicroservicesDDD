@@ -27,7 +27,7 @@ namespace Customer.App.Domain
             PhoneNumber = phoneNumber ?? throw new ArgumentNullAggregateException(nameof(phoneNumber));
             Address = address ?? throw new ArgumentNullAggregateException(nameof(address));
 
-            AddDomainEvent(new CustomerCreated(FirstName, LastName, Email, PhoneNumber, Address));
+            AddDomainEvent(new CustomerCreated(this));
         }
 
     }
