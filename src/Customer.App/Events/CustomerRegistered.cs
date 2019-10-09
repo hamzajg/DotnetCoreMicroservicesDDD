@@ -5,10 +5,10 @@ namespace Customer.App.Events
     public class CustomerRegistered : DomainEvent
     {
 
-        private readonly Domain.Customer _customer;
+        public Domain.Customer Customer;
 
         public CustomerRegistered(Domain.Customer customer) {
-            this._customer = customer;
+            this.Customer = customer;
         }
         
     }

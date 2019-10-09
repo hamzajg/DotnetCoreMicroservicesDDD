@@ -2,22 +2,25 @@ using System;
 using System.Threading.Tasks;
 using Customer.App.Domain;
 using Customer.App.Events;
+using Customer.App.Services;
 
 namespace Customer.App.UseCases
 {
     public class RegisterCustomerUseCase : IRegisterCustomerUseCase
     {
-        public RegisterCustomerUseCase()
+
+        private readonly IPublisherServices _pubServices;
+        public RegisterCustomerUseCase(IPublisherServices pubServices)
         {
+            this._pubServices = pubServices;
         }
         
-        public Task HandleAsync(RegisterCustomerCommandMessage command) 
+        public async Task HandleAsync(RegisterCustomerCommandMessage command) 
         {
             if(command == null)
                 throw new Exception();
-            var e = new CustomerRegistered(new Domain.Customer(command.FirstName, command.LasrName, command.Email,
-             new PhoneNumber(command.PhoneNumber), new Address(command.Address)));
-            return Task.CompletedTask;
+            await  _pubServices.PublishAsync(new CustomerRegistered(new Domain.Customer(command.FirstName, command.LasrName, command.Email,
+             new PhoneNumber(command.PhoneNumber), new Address(command.Address))));
         } 
     }
 }

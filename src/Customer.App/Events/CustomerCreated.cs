@@ -7,6 +7,7 @@ namespace Customer.App.Events
         private readonly Domain.Customer _custmer;
         public CustomerCreated(Domain.Customer customer)
         {
+            this._custmer = customer;
         }
     }
 }
