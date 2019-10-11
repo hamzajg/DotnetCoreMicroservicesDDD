@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Customer.App.Domain;
 using Customer.App.Events;
 using Customer.App.Services;
+using Customer.App.Commands;
 
 namespace Customer.App.UseCases
 {
@@ -15,7 +16,7 @@ namespace Customer.App.UseCases
             this._pubServices = pubServices;
         }
         
-        public async Task HandleAsync(RegisterCustomerCommandMessage command) 
+        public async Task HandleAsync(RegisterCustomer command) 
         {
             if(command == null)
                 throw new Exception();

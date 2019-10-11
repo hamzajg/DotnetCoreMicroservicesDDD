@@ -6,13 +6,14 @@ using Customer.App.UseCases;
 using Customer.App.Services;
 using Services.Common.Domain.Events;
 using Customer.App.Events;
+using Customer.App.Commands;
 
 namespace Tests.Customer.App.UseCases
 {
     public class RegisterCustomerUseCaseTests : IDisposable
     {
         private readonly MockRepository _mockRepository;
-        private readonly Mock<RegisterCustomerCommandMessage> _mockRCCM;
+        private readonly Mock<RegisterCustomer> _mockRCCM;
         private readonly Mock<IPublisherServices> _mockPubServices;
 
         private RegisterCustomerUseCase _sutRCCM;
@@ -21,7 +22,7 @@ namespace Tests.Customer.App.UseCases
         {
             _mockRepository = new MockRepository(MockBehavior.Strict);
 
-            _mockRCCM = _mockRepository.Create<RegisterCustomerCommandMessage>("Test", "Test", "Test", "Test", "Test");
+            _mockRCCM = _mockRepository.Create<RegisterCustomer>("Test", "Test", "Test", "Test", "Test");
             _mockPubServices = _mockRepository.Create<InMemoryPublisherServices>(MockBehavior.Loose).As<IPublisherServices>();
             _mockPubServices.CallBase = true;
         }

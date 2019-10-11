@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Customer.App.UseCases;
+using Customer.App.Extentions;
 
 namespace Customer.Api
 {
@@ -26,6 +28,7 @@ namespace Customer.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddUseCases();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

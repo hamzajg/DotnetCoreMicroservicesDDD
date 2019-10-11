@@ -6,7 +6,7 @@ namespace Services.Common.Domain.Events
     {
         public Guid Id {get; protected set;}
         public DateTime OcurrendOn {get;}
-        public int Version {get; set;}
+        public int Version { get; internal set; }
 
         public DomainEvent() {
             OcurrendOn = DateTime.UtcNow;
