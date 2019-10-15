@@ -54,7 +54,7 @@ namespace Tests.Customer.App.UseCases
             //Then
             _mockPubServices.Verify(x => x.PublishAsync(It.IsAny<DomainEvent>()), Times.Once);
             Assert.NotEmpty(((InMemoryPublisherServices) pubServices).Events);
-            Assert.NotNull(((CustomerRegistered) ((InMemoryPublisherServices) pubServices).Events.ElementAtOrDefault(0)).Customer);
+            Assert.NotNull(((CustomerCreated) ((InMemoryPublisherServices) pubServices).Events.ElementAtOrDefault(0)).Customer);
             Assert.True(result.IsCompleted);
         }
 
