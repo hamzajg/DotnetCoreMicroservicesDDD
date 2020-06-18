@@ -1,8 +1,20 @@
 version: '3.4'
 
 services:
-  customer.api:
+  identity.webapi:
     image: ${DOCKER_REGISTRY-}customer
     build:
       context: .
-      dockerfile: src/Services/Customer/Customer.Api/Dockerfile
+      dockerfile: src/Services/Identity/Identity.WebApi/Dockerfile
+
+  customer.webapi:
+    image: ${DOCKER_REGISTRY-}customer
+    build:
+      context: .
+      dockerfile: src/Services/Customer/Customer.WebApi/Dockerfile
+
+  product.webapi:
+    image: ${DOCKER_REGISTRY-}customer
+    build:
+      context: .
+      dockerfile: src/Services/Product/Product.WebApi/Dockerfile

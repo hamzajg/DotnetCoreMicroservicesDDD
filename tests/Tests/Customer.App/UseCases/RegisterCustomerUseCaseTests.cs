@@ -4,9 +4,9 @@ using Moq;
 using Xunit;
 using Customer.App.UseCases;
 using Customer.App.Services;
-using Services.Common.Domain.Events;
 using Customer.App.Commands;
 using Customer.Domain.Events;
+using Domain.Common.Events;
 
 namespace Tests.Customer.App.UseCases
 {
@@ -14,7 +14,7 @@ namespace Tests.Customer.App.UseCases
     {
         private readonly MockRepository _mockRepository;
         private readonly Mock<RegisterCustomer> _mockRCCM;
-        private readonly Mock<IPublisherServices> _mockPubServices;
+        private readonly Mock<PublisherServices> _mockPubServices;
 
         private RegisterCustomerUseCase _sutRCCM;
 
@@ -23,7 +23,7 @@ namespace Tests.Customer.App.UseCases
             _mockRepository = new MockRepository(MockBehavior.Strict);
 
             _mockRCCM = _mockRepository.Create<RegisterCustomer>("Test", "Test", "Test", "Test", "Test");
-            _mockPubServices = _mockRepository.Create<InMemoryPublisherServices>(MockBehavior.Loose).As<IPublisherServices>();
+            _mockPubServices = _mockRepository.Create<InMemoryPublisherServices>(MockBehavior.Loose).As<PublisherServices>();
             _mockPubServices.CallBase = true;
         }
 
@@ -35,7 +35,7 @@ namespace Tests.Customer.App.UseCases
         public void HandleCommandTest()
         {
             //Given
-            _sutRCCM = new RegisterCustomerUseCase(_mockPubServices.Object);
+            _sutRCCM = new RegisterCustomerUseCaseImpl(_mockPubServices.Object);
             //When
             var result = _sutRCCM.HandleAsync(_mockRCCM.Object);
             //Then
@@ -48,7 +48,7 @@ namespace Tests.Customer.App.UseCases
         {
             //Given
             var pubServices = _mockPubServices.Object;
-            _sutRCCM = new RegisterCustomerUseCase(pubServices);
+            _sutRCCM = new RegisterCustomerUseCaseImpl(pubServices);
             //When
             var result = _sutRCCM.HandleAsync(_mockRCCM.Object);
             //Then
@@ -62,7 +62,7 @@ namespace Tests.Customer.App.UseCases
         public void HandlingNullCommandShouldThrowsException()
         {
             //Given
-            _sutRCCM = new RegisterCustomerUseCase(_mockPubServices.Object);
+            _sutRCCM = new RegisterCustomerUseCaseImpl(_mockPubServices.Object);
             //Then
             Assert.ThrowsAsync<Exception>(() => _sutRCCM.HandleAsync(null));
         }

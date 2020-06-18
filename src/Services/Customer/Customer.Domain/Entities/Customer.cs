@@ -1,6 +1,6 @@
 using System;
 using Customer.Domain.Events;
-using Services.Common.Domain;
+using Domain.Common.Entites;
 
 namespace Customer.Domain.Entites
 {

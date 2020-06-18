@@ -1,4 +1,4 @@
-using Services.Common.Domain.Events;
+using Domain.Common.Events;
 
 namespace Customer.Domain.Events
 {

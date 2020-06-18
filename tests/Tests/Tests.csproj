@@ -25,9 +25,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Services.Common\Services.Common.csproj" />
-    <ProjectReference Include="..\..\src\Customer.Api\Customer.Api.csproj" />
+    <ProjectReference Include="..\..\src\Common\Domain.Common\Domain.Common.csproj" />
+    <ProjectReference Include="..\..\src\Common\Infrastructure.Common\Infrastructure.Common.csproj" />
     <ProjectReference Include="..\..\src\Services\Customer\Customer.Application\Customer.Application.csproj" />
+    <ProjectReference Include="..\..\src\Services\Customer\Customer.Domain\Customer.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Services\Customer\Customer.WebApi\Customer.WebApi.csproj" />
+    <ProjectReference Include="..\..\src\Services\Identity\Identity.WebApi\Identity.WebApi.csproj" />
+    <ProjectReference Include="..\..\src\Services\Product\Product.Application\Product.Application.csproj" />
+    <ProjectReference Include="..\..\src\Services\Product\Product.Domain\Product.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Services\Product\Product.Infrastructure\Product.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Services\Product\Product.WebApi\Product.WebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Cutomer.Domain\" />
   </ItemGroup>
 
 </Project>
