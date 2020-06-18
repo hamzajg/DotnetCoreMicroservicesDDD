@@ -5,8 +5,8 @@ using Xunit;
 using Customer.App.UseCases;
 using Customer.App.Services;
 using Services.Common.Domain.Events;
-using Customer.App.Events;
 using Customer.App.Commands;
+using Customer.Domain.Events;
 
 namespace Tests.Customer.App.UseCases
 {

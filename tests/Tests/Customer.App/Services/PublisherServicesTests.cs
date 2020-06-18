@@ -1,10 +1,7 @@
 ﻿using Customer.App.Services;
-using Microsoft.Extensions.Options;
 using Moq;
 using Services.Common.Domain.Events;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Tests.Customer.App.Services
