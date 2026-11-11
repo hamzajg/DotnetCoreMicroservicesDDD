@@ -8,7 +8,7 @@ namespace Product.Domain.Entities
 
         public ProductOldPriceChanged(Product product)
         {
-            this.Version += Version;
+            this.Version = ++Version;
             this.product = product;
         }
     }
