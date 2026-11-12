@@ -1,8 +1,6 @@
 ﻿using Domain.Common.Commands;
 using Product.Application.Commands;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Product.Application.UseCases
@@ -11,7 +9,11 @@ namespace Product.Application.UseCases
     {
         public Task HandleAsync(CreateProductCommand command)
         {
-            throw new NotImplementedException();
+            if (command == null)
+                throw new ArgumentNullException(nameof(command));
+
+            var product = Product.Domain.Entities.Product.Of(command.Title, command.OldPrice, command.CurrentPrice);
+            return Task.CompletedTask;
         }
     }
 }
