@@ -1,4 +1,4 @@
-﻿using Domain.Common.Events;
+﻿﻿using Domain.Common.Events;
 
 namespace Product.Domain.Entities
 {
