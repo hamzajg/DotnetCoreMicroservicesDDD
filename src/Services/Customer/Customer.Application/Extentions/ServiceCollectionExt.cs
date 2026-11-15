@@ -10,7 +10,10 @@ namespace Customer.App.Extentions
         public static void AddUseCases(this IServiceCollection services)
         {
             services.AddSingleton<PublisherServices, InMemoryPublisherServices>();
-            services.AddSingleton<RegisterCustomerUseCase, RegisterCustomerUseCase>();
+            // The interface was registered as its own implementation, so the
+            // container threw "Cannot instantiate implementation type" while
+            // building the provider and the service never started.
+            services.AddSingleton<RegisterCustomerUseCase, RegisterCustomerUseCaseImpl>();
         }
     }
 }
