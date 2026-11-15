@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY src/Services/Customer/Customer.Api/Customer.WebApi.csproj src/Services/Customer/Customer.WebApi/
+COPY src/Services/Customer/Customer.WebApi/Customer.WebApi.csproj src/Services/Customer/Customer.WebApi/
 COPY src/Services/Customer/Customer.Application/Customer.Application.csproj src/Services/Customer/Customer.Application/
 COPY src/Common/Domain.Common/Domain.Common.csproj src/Common/Domain.Common/
 COPY src/Services/Customer/Customer.Domain/Customer.Domain.csproj src/Services/Customer/Customer.Domain/
