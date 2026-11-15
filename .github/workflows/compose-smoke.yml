@@ -32,18 +32,26 @@ jobs:
           docker compose --file docker-compose.yml --file docker-compose.smoke.yml \
             up --build --detach
 
-      - name: Wait for the customer service
+      - name: Customer registration goes through the use case
+        # Customer.WebApi exposes exactly one route, POST /Customer, which
+        # dispatches a command and returns 202 with the assigned id. Waiting on
+        # it doubles as the readiness probe: the previous version waited on
+        # /WeatherForecast, which only the other two services serve.
         run: |
           set -uo pipefail
           for attempt in $(seq 1 60); do
-            code=$(curl --silent --output /dev/null --write-out '%{http_code}' \
-              http://localhost:8082/WeatherForecast || true)
-            echo "attempt ${attempt}: ${code}"
-            if [ "${code}" = "200" ]; then exit 0; fi
+            code=$(curl --silent --output /tmp/customer.json --write-out '%{http_code}' \
+              --request POST \
+              --header 'Content-Type: application/json' \
+              --data '{"firstName":"Smoke","address":"1 Route Way","phoneNumber":"1000","email":"smoke@test.local"}' \
+              http://localhost:8082/Customer || true)
+            echo "attempt ${attempt}: POST /Customer -> ${code}"
+            if [ "${code}" = "202" ]; then break; fi
             sleep 5
           done
-          echo "::error::the customer service never answered"
-          exit 1
+          cat /tmp/customer.json; echo
+          test "${code}" = "202"
+          grep --quiet 'Smoke' /tmp/customer.json
 
       - name: Identity and product services answer
         run: |
@@ -54,23 +62,6 @@ jobs:
             test "${code}" = "200"
             grep --quiet '\[' /tmp/weather.json
           done
-
-      - name: Customer registration goes through the use case
-        # The one non-GET path: the controller dispatches a command and returns
-        # 202 with the assigned id, so this proves the service is wired, not
-        # just listening.
-        run: |
-          set -euo pipefail
-          code=$(curl --silent --show-error --output /tmp/customer.json \
-            --write-out '%{http_code}' \
-            --request POST \
-            --header 'Content-Type: application/json' \
-            --data '{"firstName":"Smoke","address":"1 Route Way","phoneNumber":"1000","email":"smoke@test.local"}' \
-            http://localhost:8082/Customer)
-          echo "POST /Customer -> ${code}"
-          cat /tmp/customer.json; echo
-          test "${code}" = "202"
-          grep --quiet 'Smoke' /tmp/customer.json
 
       - name: Container logs
         if: always()
