@@ -20,7 +20,7 @@ namespace Customer.App.UseCases
         {
             if(command == null)
                 throw new Exception();
-            await  _pubServices.PublishAsync(new Entities.Customer(command.FirstName, command.LasrName, command.Email,
+            await  _pubServices.PublishAsync(new Entities.Customer(command.FirstName, command.LastName, command.Email,
              new Entities.PhoneNumber(command.PhoneNumber), new Entities.Address(command.Address)).DomainEvents.LastOrDefault());
         } 
     }

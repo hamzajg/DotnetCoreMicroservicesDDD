@@ -43,7 +43,7 @@ jobs:
             code=$(curl --silent --output /tmp/customer.json --write-out '%{http_code}' \
               --request POST \
               --header 'Content-Type: application/json' \
-              --data '{"firstName":"Smoke","address":"1 Route Way","phoneNumber":"1000","email":"smoke@test.local"}' \
+              --data '{"firstName":"Smoke","lastName":"Route","address":"1 Route Way","phoneNumber":"1000","email":"smoke@test.local"}' \
               http://localhost:8082/Customer || true)
             echo "attempt ${attempt}: POST /Customer -> ${code}"
             if [ "${code}" = "202" ]; then break; fi
@@ -52,6 +52,7 @@ jobs:
           cat /tmp/customer.json; echo
           test "${code}" = "202"
           grep --quiet 'Smoke' /tmp/customer.json
+          grep --quiet 'Route' /tmp/customer.json
 
       - name: Identity and product services answer
         run: |
