@@ -1,8 +1,13 @@
 version: '3.4'
 
 services:
+  # Each service needs its own image tag. All three used to be tagged
+  # ${DOCKER_REGISTRY-}customer, so the last build won and every container ran
+  # the same application: the stack could only ever serve one of the three
+  # services, which is why /Customer answered 404 while /WeatherForecast worked
+  # on every port.
   identity.webapi:
-    image: ${DOCKER_REGISTRY-}customer
+    image: ${DOCKER_REGISTRY-}identity
     build:
       context: .
       dockerfile: src/Services/Identity/Identity.WebApi/Dockerfile
@@ -14,7 +19,7 @@ services:
       dockerfile: src/Services/Customer/Customer.WebApi/Dockerfile
 
   product.webapi:
-    image: ${DOCKER_REGISTRY-}customer
+    image: ${DOCKER_REGISTRY-}product
     build:
       context: .
       dockerfile: src/Services/Product/Product.WebApi/Dockerfile

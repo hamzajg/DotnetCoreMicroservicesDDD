@@ -1,0 +1,73 @@
+name: Compose smoke test
+
+# Boots all three services from the repository's own compose file (plus the
+# CI-only docker-compose.smoke.yml, which swaps the developer HTTPS certificate
+# for plain HTTP on fixed ports) and calls them. The Docker job proves each
+# image builds; this proves the three services start together and answer
+# requests, including one write that goes through the customer use case.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compose-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: All three services answer
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build and start the services
+        run: |
+          docker compose --file docker-compose.yml --file docker-compose.smoke.yml \
+            up --build --detach
+
+      - name: Customer registration goes through the use case
+        # Customer.WebApi exposes exactly one route, POST /Customer, which
+        # dispatches a command and returns 202 with the assigned id. Waiting on
+        # it doubles as the readiness probe: the previous version waited on
+        # /WeatherForecast, which only the other two services serve.
+        run: |
+          set -uo pipefail
+          for attempt in $(seq 1 60); do
+            code=$(curl --silent --output /tmp/customer.json --write-out '%{http_code}' \
+              --request POST \
+              --header 'Content-Type: application/json' \
+              --data '{"firstName":"Smoke","lastName":"Route","address":"1 Route Way","phoneNumber":"1000","email":"smoke@test.local"}' \
+              http://localhost:8082/Customer || true)
+            echo "attempt ${attempt}: POST /Customer -> ${code}"
+            if [ "${code}" = "202" ]; then break; fi
+            sleep 5
+          done
+          cat /tmp/customer.json; echo
+          test "${code}" = "202"
+          grep --quiet 'Smoke' /tmp/customer.json
+          grep --quiet 'Route' /tmp/customer.json
+
+      - name: Identity and product services answer
+        run: |
+          set -euo pipefail
+          for url in http://localhost:8081/WeatherForecast http://localhost:8083/WeatherForecast; do
+            code=$(curl --silent --output /tmp/weather.json --write-out '%{http_code}' "${url}")
+            echo "${url} -> ${code}"
+            test "${code}" = "200"
+            grep --quiet '\[' /tmp/weather.json
+          done
+
+      - name: Container logs
+        if: always()
+        run: docker compose --file docker-compose.yml --file docker-compose.smoke.yml logs --no-color --tail 100
+
+      - name: Tear down
+        if: always()
+        run: docker compose --file docker-compose.yml --file docker-compose.smoke.yml down --volumes --remove-orphans

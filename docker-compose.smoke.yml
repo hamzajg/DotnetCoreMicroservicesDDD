@@ -1,0 +1,31 @@
+# CI-only override, used by .github/workflows/compose-smoke.yml.
+#
+# The committed compose files publish 80/443 on ephemeral ports and configure
+# ASPNETCORE_URLS=https://+:443 with a mounted developer certificate, which a
+# clean CI machine does not have. This file leaves HTTPS out entirely and pins
+# each service to a known host port so the smoke test can call them.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.smoke.yml up -d
+#
+services:
+
+  identity.webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "8081:80"
+
+  customer.webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "8082:80"
+
+  product.webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "8083:80"
