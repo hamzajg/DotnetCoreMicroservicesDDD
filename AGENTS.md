@@ -33,6 +33,8 @@ src/
     Domain.Common/           Command/CommandHandler, AggregateRoot, Entity,
                              DomainEvent/Event/EventHandler, RejectedEvent
     Infrastructure.Common/   shared infra building blocks (mostly empty)
+    Saga.Common/             saga orchestrator kernel: SagaStep(action+
+                             compensation), SagaOrchestrator, SagaResult
   Services/
     Customer/
       Customer.Domain/       Customer, Address, PhoneNumber entities,
