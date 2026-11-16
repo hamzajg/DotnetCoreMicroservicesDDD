@@ -36,6 +36,8 @@
     <ProjectReference Include="..\..\src\Services\Product\Product.Domain\Product.Domain.csproj" />
     <ProjectReference Include="..\..\src\Services\Product\Product.Infrastructure\Product.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Services\Product\Product.WebApi\Product.WebApi.csproj" />
+    <ProjectReference Include="..\..\src\Services\Order\Order.Domain\Order.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Services\Order\Order.Application\Order.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
