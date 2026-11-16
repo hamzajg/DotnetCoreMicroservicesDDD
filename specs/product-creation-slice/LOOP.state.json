@@ -1,0 +1,19 @@
+{
+  "feature": "product-creation-slice",
+  "status": "running",
+  "iterations": 1,
+  "updated": "2026-11-16T09:34:46Z",
+  "waves": {
+    "1": {
+      "status": "in-progress",
+      "branch": "feat/product-creation-slice-w1",
+      "pr": "\u2014",
+      "evidence": "\u2014",
+      "updated": "2026-11-16T09:34:46Z"
+    }
+  },
+  "gates": {},
+  "events": [
+    "2026-11-16T09:34:46Z start wave 1 on feat/product-creation-slice-w1"
+  ]
+}
