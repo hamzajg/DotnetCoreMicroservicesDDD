@@ -15,9 +15,21 @@ Each service follows a layered structure: a framework-free domain, an
 application layer for use cases, an infrastructure layer for persistence and
 integrations, and a Web API host.
 
+Customer and Product both expose the full Domain → Application → WebApi slice:
+a command, a use case that publishes the domain event through an injectable
+`PublisherServices`, a `ServiceCollectionExt.AddUseCases()` registration, and a
+controller.
+
+## HTTP API
+
+| Service | Endpoint | Behaviour |
+|---|---|---|
+| Customer | `POST /Customer` | registers a customer, publishes `CustomerCreated`, returns `202 Accepted` |
+| Product | `POST /Products` | creates a product, publishes `ProductCreated`, returns `202 Accepted` |
+
 ## Tech stack
 
-- C# / .NET Core 3.0 and 3.1, .NET Standard 2.1
+- C# / .NET 10, .NET Standard 2.1 (shared libraries)
 - ASP.NET Core Web API
 - Docker Compose for running the services together
 - xUnit-style tests under `tests/Tests`
@@ -39,7 +51,7 @@ MicroservicesDDD.sln
 
 ## Building
 
-Install the .NET Core 3.1 SDK, then:
+Install the .NET 10 SDK, then:
 
 ```bash
 dotnet restore MicroservicesDDD.sln
@@ -63,5 +75,6 @@ dotnet test MicroservicesDDD.sln
 
 ## Status
 
-Reference/learning project. It targets .NET Core 3.x, which is out of support;
-moving forward would mean retargeting the projects to a supported .NET version.
+Reference/learning project. The structure is the lesson: each service is a
+Domain → Application → WebApi slice, with Customer and Product wired
+end-to-end and Identity still a scaffold.

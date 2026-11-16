@@ -19,7 +19,7 @@ Verified 2026-11-13 against CI (`.github/workflows/ci.yml`).
 |---|---|
 | Restore | `dotnet restore MicroservicesDDD.sln` |
 | Build | `dotnet build MicroservicesDDD.sln -c Release --no-restore` |
-| Test | `dotnet test tests/Tests/Tests.csproj -c Release --no-build` (12 tests) |
+| Test | `dotnet test tests/Tests/Tests.csproj -c Release --no-build` (22 tests) |
 | Run all services | `docker compose up --build` |
 
 Requires: .NET 10 SDK (CI pins `10.0.x`). Solution: `MicroservicesDDD.sln`.
@@ -44,11 +44,13 @@ src/
       Customer.WebApi/       ASP.NET host + CustomerController
     Product/
       Product.Domain/        Product entity + domain events
-      Product.Application/   CreateProduct use case/command
+      Product.Application/   CreateProduct use case (publishes ProductCreated),
+                             InMemoryPublisherServices, ServiceCollectionExt
       Product.Infrastructure/ persistence/integration (mostly stub)
-      Product.WebApi/        ASP.NET host
+      Product.WebApi/        ASP.NET host + ProductsController
     Identity/Identity.WebApi/  auth-ish host (WeatherForecast scaffold)
-tests/Tests/                 Product.Domain, Product.App, Customer.App tests
+tests/Tests/                 Product.Domain, Product.App, Product.WebApi,
+                             Customer.App tests
 docker-compose.yml           Identity + Customer + Product APIs
 ```
 
@@ -72,11 +74,12 @@ web concerns leak into Domain.
 ## Landmines
 
 - **Default branch is `master`, not `main`.**
-- README is **stale**: it says ".NET Core 3.0/3.1, install the 3.1 SDK" —
-  csproj targets are `net10.0`/`netstandard2.1` and CI uses `10.0.x`.
-  Trust csproj + CI, not the README's stack section.
+- README's stack section previously said ".NET Core 3.0/3.1, install the 3.1
+  SDK"; it was corrected to .NET 10 (2026-11-16). csproj targets are
+  `net10.0`/`netstandard2.1` and CI uses `10.0.x` — trust csproj + CI.
 - `Identity.WebApi` and `Product.WebApi` still contain `WeatherForecast`
   scaffold controllers — template leftovers, not real features.
+  `Product.WebApi` also has the real `ProductsController` (`POST /Products`).
 - `CreatePruductUseCase.cs` has a typo'd filename ("Pruduct") — it's the
   real file; don't "fix" the name without checking references.
 - `tests/Tests` covers only Product + Customer — Identity has no tests.

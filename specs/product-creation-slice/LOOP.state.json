@@ -2,18 +2,27 @@
   "feature": "product-creation-slice",
   "status": "running",
   "iterations": 1,
-  "updated": "2026-11-16T09:34:46Z",
+  "updated": "2026-11-16T09:40:45Z",
   "waves": {
     "1": {
-      "status": "in-progress",
+      "status": "done",
       "branch": "feat/product-creation-slice-w1",
+      "pr": "#12",
+      "evidence": "4/4 wave-1 scenarios pass (use case publishes ProductCreated, null/empty-title rejected, AddUseCases resolves); CI green",
+      "updated": "2026-11-16T09:40:40Z"
+    },
+    "2": {
+      "status": "in-progress",
+      "branch": "feat/product-creation-slice-w2",
       "pr": "\u2014",
       "evidence": "\u2014",
-      "updated": "2026-11-16T09:34:46Z"
+      "updated": "2026-11-16T09:40:45Z"
     }
   },
   "gates": {},
   "events": [
-    "2026-11-16T09:34:46Z start wave 1 on feat/product-creation-slice-w1"
+    "2026-11-16T09:34:46Z start wave 1 on feat/product-creation-slice-w1",
+    "2026-11-16T09:40:40Z complete wave 1 (#12): 4/4 wave-1 scenarios pass (use case publishes ProductCreated, null/empty-title rejected, AddUseCases resolves); CI green",
+    "2026-11-16T09:40:45Z start wave 2 on feat/product-creation-slice-w2"
   ]
 }
