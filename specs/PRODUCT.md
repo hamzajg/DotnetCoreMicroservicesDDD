@@ -2,6 +2,7 @@
 
 | Feature | Stories | Scenarios | Waves | Planned | Validated |
 |---------|---------|-----------|-------|---------|-----------|
+| order-saga-slice (`order-saga-slice/`) | 2 | 9 | 2 | yes | yes |
 | product-creation-slice (`product-creation-slice/`) | 2 | 7 | 2 | yes | yes |
 
 
