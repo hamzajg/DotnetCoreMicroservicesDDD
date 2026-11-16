@@ -2,18 +2,27 @@
   "feature": "order-saga-slice",
   "status": "running",
   "iterations": 1,
-  "updated": "2026-11-16T11:05:21Z",
+  "updated": "2026-11-16T11:14:12Z",
   "waves": {
     "1": {
-      "status": "in-progress",
+      "status": "done",
       "branch": "feat/order-saga-slice-w1",
+      "pr": "#15",
+      "evidence": "28/28 tests green, CI green, squashed into master",
+      "updated": "2026-11-16T11:14:05Z"
+    },
+    "2": {
+      "status": "in-progress",
+      "branch": "feat/order-saga-slice-w2",
       "pr": "\u2014",
       "evidence": "\u2014",
-      "updated": "2026-11-16T11:05:21Z"
+      "updated": "2026-11-16T11:14:12Z"
     }
   },
   "gates": {},
   "events": [
-    "2026-11-16T11:05:21Z start wave 1 on feat/order-saga-slice-w1"
+    "2026-11-16T11:05:21Z start wave 1 on feat/order-saga-slice-w1",
+    "2026-11-16T11:14:05Z complete wave 1 (#15): 28/28 tests green, CI green, squashed into master",
+    "2026-11-16T11:14:12Z start wave 2 on feat/order-saga-slice-w2"
   ]
 }
