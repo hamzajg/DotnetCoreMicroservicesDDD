@@ -1,0 +1,19 @@
+{
+  "feature": "order-saga-slice",
+  "status": "running",
+  "iterations": 1,
+  "updated": "2026-11-16T11:05:21Z",
+  "waves": {
+    "1": {
+      "status": "in-progress",
+      "branch": "feat/order-saga-slice-w1",
+      "pr": "\u2014",
+      "evidence": "\u2014",
+      "updated": "2026-11-16T11:05:21Z"
+    }
+  },
+  "gates": {},
+  "events": [
+    "2026-11-16T11:05:21Z start wave 1 on feat/order-saga-slice-w1"
+  ]
+}
