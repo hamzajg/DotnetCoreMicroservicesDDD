@@ -8,6 +8,7 @@ namespace Tests.Product.App.Extentions
 {
     public class ServiceCollectionExtTests
     {
+        // Scenario: AddUseCases registers the product use case and its publisher
         [Fact]
         public void AddUseCasesRegistersTheProductUseCaseAndItsPublisher()
         {
