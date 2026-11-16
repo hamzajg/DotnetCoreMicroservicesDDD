@@ -1,4 +1,5 @@
-﻿using Product.Application.Commands;
+using Product.Application.Commands;
+using Product.Application.Services;
 using Product.Application.UseCases;
 using System;
 using System.Threading.Tasks;
@@ -8,45 +9,53 @@ namespace Tests.Product.App.UseCases
 {
     public class CreatePeoductUseCaseTest : IDisposable
     {
+        private readonly InMemoryPublisherServices _publisher = new InMemoryPublisherServices();
+
         public void Dispose()
         {
         }
 
-        [Fact]
-        public async Task ShouldCreateProductFromCommand()
+        private static CreateProductCommand ValidCommand() => new CreateProductCommand
         {
-            // GIVEN
-            var createProductUseCase = new CreatePruductUseCase();
-            var command = new CreateProductCommand()
-            {
-                Title = "Test Product",
-                OldPrice = 100.0f,
-                CurrentPrice = 80.0f
-            };
+            Title = "Test Product",
+            OldPrice = 100.0f,
+            CurrentPrice = 80.0f,
+        };
 
-            // WHEN
-            await createProductUseCase.HandleAsync(command);
+        [Fact]
+        public async Task CreatingAProductPublishesAProductCreatedEvent()
+        {
+            // GIVEN a use case over an in-memory publisher
+            var useCase = new CreatePruductUseCase(_publisher);
 
-            // THEN completes without exception
+            // WHEN a valid command is handled
+            await useCase.HandleAsync(ValidCommand());
+
+            // THEN exactly one domain event was published
+            Assert.Single(_publisher.Events);
         }
 
         [Fact]
-        public async Task ShouldThrowWhenCommandIsNull()
+        public async Task ANullCommandIsRejected()
         {
-            var createProductUseCase = new CreatePruductUseCase();
-            await Assert.ThrowsAsync<ArgumentNullException>(() => createProductUseCase.HandleAsync(null));
+            var useCase = new CreatePruductUseCase(_publisher);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(() => useCase.HandleAsync(null));
         }
 
         [Fact]
-        public async Task ShouldThrowWhenTitleIsNullOrEmpty()
+        public async Task AnEmptyTitleIsRejectedAndNothingIsPublished()
         {
-            var createProductUseCase = new CreatePruductUseCase();
-            await Assert.ThrowsAsync<ArgumentNullException>(() => createProductUseCase.HandleAsync(new CreateProductCommand()
+            var useCase = new CreatePruductUseCase(_publisher);
+
+            await Assert.ThrowsAsync<ArgumentNullException>(() => useCase.HandleAsync(new CreateProductCommand
             {
                 Title = "",
                 OldPrice = 10.0f,
-                CurrentPrice = 5.0f
+                CurrentPrice = 5.0f,
             }));
+
+            Assert.Empty(_publisher.Events);
         }
     }
 }
