@@ -26,6 +26,7 @@ namespace Tests.Product.WebApi.Controllers
             CurrentPrice = 80.0f,
         };
 
+        // Scenario: POST /Products returns 202 Accepted
         [Fact]
         public async Task PostProductsReturns202Accepted()
         {
@@ -41,6 +42,7 @@ namespace Tests.Product.WebApi.Controllers
             Assert.Same(command, accepted.Value);
         }
 
+        // Scenario: POST /Products publishes a ProductCreated event
         [Fact]
         public async Task PostProductsPublishesAProductCreatedEvent()
         {
@@ -52,6 +54,7 @@ namespace Tests.Product.WebApi.Controllers
             Assert.Single(_publisher.Events);
         }
 
+        // Scenario: an empty title over the endpoint is surfaced as an error
         [Fact]
         public async Task AnEmptyTitleOverTheEndpointIsSurfacedAsAnError()
         {

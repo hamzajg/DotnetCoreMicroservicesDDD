@@ -22,6 +22,7 @@ namespace Tests.Product.App.UseCases
             CurrentPrice = 80.0f,
         };
 
+        // Scenario: creating a product publishes a ProductCreated event
         [Fact]
         public async Task CreatingAProductPublishesAProductCreatedEvent()
         {
@@ -35,6 +36,7 @@ namespace Tests.Product.App.UseCases
             Assert.Single(_publisher.Events);
         }
 
+        // Scenario: a null command is rejected
         [Fact]
         public async Task ANullCommandIsRejected()
         {
@@ -43,6 +45,7 @@ namespace Tests.Product.App.UseCases
             await Assert.ThrowsAsync<ArgumentNullException>(() => useCase.HandleAsync(null));
         }
 
+        // Scenario: an empty title is rejected and nothing is published
         [Fact]
         public async Task AnEmptyTitleIsRejectedAndNothingIsPublished()
         {
