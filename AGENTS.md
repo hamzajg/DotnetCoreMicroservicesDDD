@@ -5,25 +5,26 @@ Guidance for AI agents (and humans) working in this repository.
 ## Project
 
 A .NET microservices reference project built around Domain-Driven Design:
-three services (Customer, Product, Identity) plus shared common libraries,
-each service layered as Domain → Application → Infrastructure → WebApi.
-Learning/reference project — structure is the lesson.
+four services (Customer, Product, Order, Identity) plus shared common
+libraries, each service layered as Domain → Application → Infrastructure →
+WebApi. Learning/reference project — structure is the lesson.
 Stack: C#, `net10.0` (+ `netstandard2.1` for shared libs), ASP.NET Core,
 Docker Compose, xUnit tests.
 
 ## Commands
 
-Verified 2026-11-13 against CI (`.github/workflows/ci.yml`).
+Verified 2026-11-16 against CI (`.github/workflows/ci.yml`).
 
 | Task | Command |
 |---|---|
 | Restore | `dotnet restore MicroservicesDDD.sln` |
 | Build | `dotnet build MicroservicesDDD.sln -c Release --no-restore` |
-| Test | `dotnet test tests/Tests/Tests.csproj -c Release --no-build` (22 tests) |
+| Test | `dotnet test tests/Tests/Tests.csproj -c Release --no-build` (31 tests) |
 | Run all services | `docker compose up --build` |
 
 Requires: .NET 10 SDK (CI pins `10.0.x`). Solution: `MicroservicesDDD.sln`.
-Each service has a Dockerfile under its `WebApi` project.
+Each service has a Dockerfile under its `WebApi` project — except Order, which
+has no Dockerfile yet and is not in `docker-compose.yml`.
 
 ## Architecture
 
@@ -35,6 +36,7 @@ src/
     Infrastructure.Common/   shared infra building blocks (mostly empty)
     Saga.Common/             saga orchestrator kernel: SagaStep(action+
                              compensation), SagaOrchestrator, SagaResult
+                             (consumed by Order's CreateOrder use case)
   Services/
     Customer/
       Customer.Domain/       Customer, Address, PhoneNumber entities,
@@ -48,10 +50,20 @@ src/
                              InMemoryPublisherServices, ServiceCollectionExt
       Product.Infrastructure/ persistence/integration (mostly stub)
       Product.WebApi/        ASP.NET host + ProductsController
+    Order/
+      Order.Domain/          Order aggregate, OrderLine value object,
+                             OrderCreated domain event
+      Order.Application/     CreateOrder use case (a compensating saga over
+                             Saga.Common) + ports CustomerDirectory/
+                             ProductCatalog/OrderRepository with in-memory
+                             adapters, InMemoryPublisherServices,
+                             ServiceCollectionExt
+      Order.WebApi/          ASP.NET host + OrdersController (POST /Orders)
     Identity/Identity.WebApi/  auth-ish host (WeatherForecast scaffold)
 tests/Tests/                 Product.Domain, Product.App, Product.WebApi,
-                             Customer.App tests
-docker-compose.yml           Identity + Customer + Product APIs
+                             Customer.App, Order.App, Order.WebApi,
+                             Saga tests
+docker-compose.yml           Identity + Customer + Product APIs (no Order)
 ```
 
 Layering rule per service: **Domain is framework-free** (entities,
@@ -82,7 +94,11 @@ web concerns leak into Domain.
   `Product.WebApi` also has the real `ProductsController` (`POST /Products`).
 - `CreatePruductUseCase.cs` has a typo'd filename ("Pruduct") — it's the
   real file; don't "fix" the name without checking references.
-- `tests/Tests` covers only Product + Customer — Identity has no tests.
+- `tests/Tests` covers Product, Customer, Order and `Saga.Common` — Identity
+  has no tests.
+- Order has **no Dockerfile** and is **not in `docker-compose.yml`**; the
+  Docker and compose-smoke CI jobs enumerate services explicitly, so they
+  don't build it. Containerising Order is a separate change.
 - Dockerfiles in the working tree may be locally modified (aspnet 3.1→10.0
   base images) — check `git status`/`git diff` before assuming clean.
 
