@@ -39,11 +39,14 @@ reuses: `Command`/`CommandHandler`, `AggregateRoot`, `Entity`,
 ## State
 
 Repositories are **in-memory** (`InMemoryCustomerRepository`) — this is a
-structural reference, not a persistence demo. Docker Compose runs the three
-APIs; there is no DB container.
+structural reference, not a persistence demo. Product publishes domain events
+through an in-memory `PublisherServices` instead of a broker. Docker Compose
+runs the three APIs; there is no DB container.
 
 ## Frontend ↔ backend
 
 No frontend in this repo — APIs only. Consumers are the WebApi controllers
-(`CustomerController` etc.); contracts are the command/event shapes in
-Application/Domain.
+(`CustomerController` with `POST /Customer`, `ProductsController` with
+`POST /Products`); contracts are the command/event shapes in
+Application/Domain. Both slices are wired the same way: controller → use case
+interface → impl → `PublisherServices`, registered through `AddUseCases`.
